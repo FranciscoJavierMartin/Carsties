@@ -61,10 +61,10 @@ public class AuctionsController : ControllerBase
 
     _context.Auctions.Add(auction);
 
-    bool isSaved = await _context.SaveChangesAsync() > 0;
     AuctionDto newAuction = _mapper.Map<AuctionDto>(auction);
-
     await _publishEndpoint.Publish(_mapper.Map<AuctionCreated>(newAuction));
+
+    bool isSaved = await _context.SaveChangesAsync() > 0;
 
     if (isSaved)
     {
