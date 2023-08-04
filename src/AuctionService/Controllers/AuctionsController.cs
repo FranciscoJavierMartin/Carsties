@@ -98,6 +98,8 @@ public class AuctionsController : ControllerBase
       auction.Item.Mileage = updateAuctionDto.Mileage ?? auction.Item.Mileage;
       auction.Item.Year = updateAuctionDto.Year ?? auction.Item.Year;
 
+      await _publishEndpoint.Publish(_mapper.Map<AuctionUpdated>(auction));
+
       result = await _context.SaveChangesAsync() > 0
         ? Ok()
         : BadRequest("Problem saving changes");
@@ -120,6 +122,9 @@ public class AuctionsController : ControllerBase
     else
     {
       _context.Auctions.Remove(auction);
+
+      await _publishEndpoint.Publish<AuctionDeleted>(new { id = auction.Id.ToString() });
+
       result = await _context.SaveChangesAsync() > 0
         ? Ok()
         : BadRequest("Could not update DB");
