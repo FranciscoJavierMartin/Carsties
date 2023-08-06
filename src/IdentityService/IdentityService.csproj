@@ -21,8 +21,4 @@
 		  <PrivateAssets>all</PrivateAssets>
 		</PackageReference>
 	</ItemGroup>
-
-	<ItemGroup>
-	  <Folder Include="Pages/Account/Register/" />
-	</ItemGroup>
 </Project>
