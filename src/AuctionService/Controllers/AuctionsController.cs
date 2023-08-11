@@ -36,7 +36,7 @@ public class AuctionsController : ControllerBase
     AuctionDto auction = await _auctionRepository.GetAuctionByIdAsync(id);
 
     return auction == null
-      ? NotFound(id)
+      ? NotFound()
       : auction;
   }
 
