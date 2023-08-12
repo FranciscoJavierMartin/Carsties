@@ -103,4 +103,33 @@ public class AuctionControllerTests
     Assert.Equal("GetAuctionById", createdResult.ActionName);
     Assert.IsType<AuctionDto>(createdResult.Value);
   }
+
+  [Fact]
+  public async Task CreateAuction_FailedSave_Returns400BadRequest()
+  {
+    var auction = _fixture.Create<CreateAuctionDto>();
+    _auctionRepositoryMock
+      .Setup(repo => repo.AddAuction(It.IsAny<Auction>()));
+    _auctionRepositoryMock.Setup(repo => repo.SaveChangesAsync()).ReturnsAsync(false);
+
+    var result = await _controller.CreateAuction(auction);
+
+    Assert.IsType<BadRequestObjectResult>(result.Result);
+  }
+
+  [Fact]
+  public async Task UpdateAuction_WithUpdateAuctionDto_ReturnsOkResponse()
+  {
+    var auction = _fixture.Build<Auction>().Without(x => x.Item).Create();
+    auction.Item = _fixture.Build<Item>().Without(x => x.Auction).Create();
+    auction.Seller = "test";
+    var updateDto = _fixture.Create<UpdateAuctionDto>();
+    _auctionRepositoryMock
+      .Setup(repo => repo.GetAuctionEntityById(It.IsAny<Guid>())).ReturnsAsync(auction);
+    _auctionRepositoryMock.Setup(repo => repo.SaveChangesAsync()).ReturnsAsync(true);
+
+    var result = await _controller.UpdateAuction(auction.Id, updateDto);
+
+    Assert.IsType<OkResult>(result);
+  }
 }
