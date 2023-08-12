@@ -124,12 +124,27 @@ public class AuctionControllerTests
     auction.Item = _fixture.Build<Item>().Without(x => x.Auction).Create();
     auction.Seller = "test";
     var updateDto = _fixture.Create<UpdateAuctionDto>();
-    _auctionRepositoryMock
-      .Setup(repo => repo.GetAuctionEntityById(It.IsAny<Guid>())).ReturnsAsync(auction);
+    _auctionRepositoryMock.Setup(repo => repo.GetAuctionEntityById(It.IsAny<Guid>()))
+        .ReturnsAsync(auction);
     _auctionRepositoryMock.Setup(repo => repo.SaveChangesAsync()).ReturnsAsync(true);
 
     var result = await _controller.UpdateAuction(auction.Id, updateDto);
 
     Assert.IsType<OkResult>(result);
+  }
+
+  [Fact]
+  public async Task UpdateAuction_WithInvalidUser_Returns403Forbid()
+  {
+    var auction = _fixture.Build<Auction>().Without(x => x.Item).Create();
+    auction.Item = _fixture.Build<Item>().Without(x => x.Auction).Create();
+    auction.Seller = "not-test";
+    var updateDto = _fixture.Create<UpdateAuctionDto>();
+    _auctionRepositoryMock.Setup(repo => repo.GetAuctionEntityById(It.IsAny<Guid>()))
+        .ReturnsAsync(auction);
+
+    var result = await _controller.UpdateAuction(auction.Id, updateDto);
+
+    Assert.IsType<ForbidResult>(result);
   }
 }
