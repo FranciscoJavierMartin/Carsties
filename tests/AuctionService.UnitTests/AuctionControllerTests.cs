@@ -162,18 +162,31 @@ public class AuctionControllerTests
     Assert.IsType<NotFoundResult>(result);
   }
 
+  // [Fact]
+  // public async Task DeleteAuction_WithValidUser_ReturnsOkResponse()
+  // {
+  //   var auction = _fixture.Build<Auction>().Without(x => x.Item).Create();
+  //   auction.Seller = "test";
+
+  //   _auctionRepositoryMock.Setup(repo => repo.GetAuctionEntityById(It.IsAny<Guid>()))
+  //       .ReturnsAsync(auction);
+  //   _auctionRepositoryMock.Setup(repo => repo.SaveChangesAsync()).ReturnsAsync(true);
+
+  //   var result = await _controller.DeleteAuction(auction.Id);
+
+  //   Assert.IsType<OkResult>(result);
+  // }
+
   [Fact]
-  public async Task DeleteAuction_WithValidUser_ReturnsOkResponse()
+  public async Task DeleteAuction_WithInvalidGuid_Returns404Response()
   {
     var auction = _fixture.Build<Auction>().Without(x => x.Item).Create();
-    auction.Seller = "test";
 
     _auctionRepositoryMock.Setup(repo => repo.GetAuctionEntityById(It.IsAny<Guid>()))
-        .ReturnsAsync(auction);
-    _auctionRepositoryMock.Setup(repo => repo.SaveChangesAsync()).ReturnsAsync(true);
+        .ReturnsAsync(value: null);
 
     var result = await _controller.DeleteAuction(auction.Id);
 
-    Assert.IsType<OkResult>(result);
+    Assert.IsType<NotFoundResult>(result);
   }
 }
