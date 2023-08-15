@@ -2,7 +2,7 @@
 using System.Net.Http.Json;
 using AuctionService.Data;
 using AuctionService.DTOs;
-using AuctionService.IntegrationTests.Fixture;
+using AuctionService.IntegrationTests.Fixtures;
 using AuctionService.IntegrationTests.Utils;
 using Contracts;
 using MassTransit.Testing;
@@ -10,7 +10,8 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace AuctionService.IntegrationTests;
 
-public class AuctionBusTests : IClassFixture<CustomWebAppFactory>, IAsyncLifetime
+[Collection("Shared collection")]
+public class AuctionBusTests : IAsyncLifetime
 {
   private readonly CustomWebAppFactory _factory;
   private readonly HttpClient _httpClient;
@@ -46,7 +47,7 @@ public class AuctionBusTests : IClassFixture<CustomWebAppFactory>, IAsyncLifetim
     return Task.CompletedTask;
   }
 
-  private CreateAuctionDto GetAuctionForCreation()
+  private static CreateAuctionDto GetAuctionForCreation()
   {
     return new CreateAuctionDto
     {

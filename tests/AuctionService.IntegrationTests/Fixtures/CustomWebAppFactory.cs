@@ -9,7 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Testcontainers.PostgreSql;
 using WebMotions.Fake.Authentication.JwtBearer;
 
-namespace AuctionService.IntegrationTests.Fixture;
+namespace AuctionService.IntegrationTests.Fixtures;
 
 public class CustomWebAppFactory : WebApplicationFactory<Program>, IAsyncLifetime
 {
