@@ -6,32 +6,45 @@ import { Auction, PagedResult } from '@/types';
 import AppPagination from '@/app/components/AppPagination';
 import { getData } from '@/app/actions/auctionActions';
 import Filters from '@/app/auctions/Filters';
+import { useParamsStore } from '@/app/hooks/useParamsStore';
+import { shallow } from 'zustand/shallow';
+import qs from 'query-string';
 
 export default function Listings() {
-  const [auctions, setAuctions] = useState<Auction[]>([]);
-  const [pageCount, setPageCount] = useState<number>(0);
-  const [pageNumber, setPageNumber] = useState<number>(1);
-  const [pageSize, setPageSize] = useState<number>(4);
+  const [data, setData] = useState<PagedResult<Auction>>();
+  const params = useParamsStore(
+    (state) => ({
+      pageNumber: state.pageNumber,
+      pageSize: state.pageSize,
+      searchTerm: state.searchTerm,
+    }),
+    shallow
+  );
+  const setParams = useParamsStore((state) => state.setParams);
+  const url = qs.stringifyUrl({ url: '', query: params });
+
+  function setPageNumber(pageNumber: number): void {
+    setParams({ pageNumber });
+  }
 
   useEffect(() => {
-    getData(pageNumber, pageSize).then((data: PagedResult<Auction>) => {
-      setAuctions(data.results);
-      setPageCount(data.pageCount);
+    getData(url).then((data: PagedResult<Auction>) => {
+      setData(data);
     });
-  }, [pageNumber, pageSize]);
+  }, [url]);
 
-  return auctions.length ? (
+  return data ? (
     <>
-      <Filters pageSize={pageSize} setPageSize={setPageSize} />
+      <Filters />
       <div className='grid grid-cols-4 gap-6'>
-        {auctions.map((auction: Auction) => (
+        {data.results.map((auction: Auction) => (
           <AuctionCard key={auction.id} auction={auction} />
         ))}
       </div>
       <div className='flex justify-center'>
         <AppPagination
-          currentPage={1}
-          pageCount={pageCount}
+          currentPage={params.pageNumber}
+          pageCount={data.pageCount}
           pageChanged={setPageNumber}
         />
       </div>
