@@ -6,14 +6,15 @@ import { useParamsStore } from '@/app/hooks/useParamsStore';
 
 export default function Search() {
   const setParams = useParamsStore((state) => state.setParams);
-  const [value, setValue] = useState<string>('');
+  const searchValue = useParamsStore((state) => state.searchValue);
+  const setSearchValue = useParamsStore((state) => state.setSearchValue);
 
   function onChange(event: React.ChangeEvent<HTMLInputElement>) {
-    setValue(event.target.value);
+    setSearchValue(event.target.value);
   }
 
   function search() {
-    setParams({ searchTerm: value });
+    setParams({ searchTerm: searchValue });
   }
 
   return (
@@ -25,6 +26,7 @@ export default function Search() {
             search();
           }
         }}
+        value={searchValue}
         placeholder='Search for cars by make, model or color'
         className='
         flex-grow
