@@ -6,11 +6,7 @@ export async function getSession() {
 }
 
 export async function getCurrentUser() {
-  let user: {
-    name?: string | null | undefined;
-    email?: string | null | undefined;
-    image?: string | null | undefined;
-  } | null;
+  let user: any;
 
   try {
     const session = await getSession();
