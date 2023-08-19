@@ -1,0 +1,57 @@
+import { component$ } from '@builder.io/qwik';
+
+export default component$(() => {
+  return (
+    <button
+      type='button'
+      class='
+        group 
+        flex 
+        h-min 
+        items-center 
+        justify-center 
+        p-0.5 
+        text-center 
+        font-medium 
+        relative 
+        focus:z-10 
+        focus:outline-none 
+        text-white 
+        bg-cyan-700 
+        border-transparent 
+        enabled:hover:bg-cyan-800 
+        focus:ring-cyan-300 
+        dark:bg-cyan-600 
+        dark:enabled:hover:bg-cyan-700 
+        dark:focus:ring-cyan-800 
+        border-0 
+        rounded-lg 
+        focus:ring-2'
+    >
+      <span
+        class='
+        items-stretch 
+        flex 
+        justify-center 
+        bg-white 
+        text-gray-900 
+        transition-all 
+        duration-75 
+        ease-in 
+        group-enabled:group-hover:bg-opacity-0 
+        group-enabled:group-hover:text-inherit 
+        dark:bg-gray-900 
+        dark:text-white 
+        w-full 
+        rounded-md 
+        text-sm 
+        px-4 
+        py-2 
+        border 
+        border-transparent'
+      >
+        Login
+      </span>
+    </button>
+  );
+});
