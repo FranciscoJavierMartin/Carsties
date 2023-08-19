@@ -5,18 +5,18 @@ export default component$<{ imageUrl: string }>(({ imageUrl }) => {
   return (
     <Image
       src={imageUrl}
-      class='
-        absolute
-        duration-700
-        ease-in-out
-        grayscale-0 blue-0 scale-100
-        group-hover:opacity-75
-        h-full
-        inset-0
-        object-cover 
-        text-transparent
-        w-full
-      '
+      class={[
+        'absolute',
+        'duration-700',
+        'ease-in-out',
+        'group-hover:opacity-75',
+        'h-full',
+        'inset-0',
+        'object-cover ',
+        'text-transparent',
+        'w-full',
+        'grayscale-0 blue-0 scale-100',
+      ]}
       alt='image'
       aspectRatio='auto'
       data-nimg='fill'
