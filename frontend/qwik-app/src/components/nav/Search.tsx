@@ -1,6 +1,5 @@
 import { component$, useSignal } from '@builder.io/qwik';
 import type { QwikKeyboardEvent } from '@builder.io/qwik';
-import { BsSearch } from '@qwikest/icons/bootstrap';
 
 export default component$(() => {
   const value = useSignal<string>('');

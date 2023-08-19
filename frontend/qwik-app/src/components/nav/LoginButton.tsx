@@ -21,9 +21,6 @@ export default component$(() => {
         border-transparent 
         enabled:hover:bg-cyan-800 
         focus:ring-cyan-300 
-        dark:bg-cyan-600 
-        dark:enabled:hover:bg-cyan-700 
-        dark:focus:ring-cyan-800 
         border-0 
         rounded-lg 
         focus:ring-2'
@@ -40,8 +37,6 @@ export default component$(() => {
         ease-in 
         group-enabled:group-hover:bg-opacity-0 
         group-enabled:group-hover:text-inherit 
-        dark:bg-gray-900 
-        dark:text-white 
         w-full 
         rounded-md 
         text-sm 
