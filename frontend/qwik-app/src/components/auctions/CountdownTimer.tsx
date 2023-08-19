@@ -29,23 +29,21 @@ export default component$<{ auctionEnd: string }>(({ auctionEnd }) => {
   return (
     <div>
       <div
-        class={`
-        border-2 
-        border-white 
-        text-white 
-        py-1 
-        px-2 
-        rounded-lg 
-        flex 
-        justify-center
-        ${
+        class={[
+          'border-2',
+          'border-white',
+          'text-white',
+          'py-1',
+          'px-2',
+          'rounded-lg',
+          'flex',
+          'justify-center',
           isCompleted.value
             ? 'bg-red-600'
             : days.value === 0 && hours.value < 10
             ? 'bg-amber-600'
-            : 'bg-green-600'
-        }
-      `}
+            : 'bg-green-600',
+        ]}
       >
         {isCompleted.value ? (
           <span>Auction finished</span>
