@@ -3,6 +3,7 @@ lockfileVersion: 5.4
 specifiers:
   '@builder.io/qwik': ^1.2.7
   '@builder.io/qwik-city': ^1.2.7
+  '@tailwindcss/aspect-ratio': ^0.4.2
   '@types/eslint': 8.44.1
   '@types/node': ^20.4.5
   '@typescript-eslint/eslint-plugin': 6.2.0
@@ -25,6 +26,7 @@ dependencies:
 devDependencies:
   '@builder.io/qwik': 1.2.7_undici@5.22.1
   '@builder.io/qwik-city': 1.2.7
+  '@tailwindcss/aspect-ratio': 0.4.2_tailwindcss@3.3.3
   '@types/eslint': 8.44.1
   '@types/node': 20.5.1
   '@typescript-eslint/eslint-plugin': 6.2.0_w3tbsvtiyibnil5vzurrrrj72m
@@ -425,6 +427,14 @@ packages:
       '@types/estree': 1.0.1
       estree-walker: 2.0.2
       picomatch: 2.3.1
+    dev: true
+
+  /@tailwindcss/aspect-ratio/0.4.2_tailwindcss@3.3.3:
+    resolution: {integrity: sha512-8QPrypskfBa7QIMuKHg2TA7BqES6vhBrDLOv8Unb6FcFyd3TjKbc6lcmb9UPQHxfl24sXoJ41ux/H7qQQvfaSQ==}
+    peerDependencies:
+      tailwindcss: '>=2.0.0 || >=3.0.0 || >=3.0.0-alpha.1'
+    dependencies:
+      tailwindcss: 3.3.3
     dev: true
 
   /@trysound/sax/0.2.0:
