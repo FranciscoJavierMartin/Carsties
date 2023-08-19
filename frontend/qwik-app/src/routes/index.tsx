@@ -1,9 +1,10 @@
 import { component$ } from '@builder.io/qwik';
+import Listings from '~/components/auctions/Listings';
 
 export default component$(() => {
   return (
     <>
-      <h1>Hello world</h1>
+      <Listings />
     </>
   );
 });

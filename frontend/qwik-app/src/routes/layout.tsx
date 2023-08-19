@@ -4,7 +4,9 @@ import type { DocumentHead } from '@builder.io/qwik-city';
 export default component$(() => {
   return (
     <>
-      <Slot />
+      <main class='container mx-auto px-5 pt-10'>
+        <Slot />
+      </main>
     </>
   );
 });
