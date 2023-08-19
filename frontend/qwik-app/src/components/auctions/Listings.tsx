@@ -8,6 +8,7 @@ import { useLocation } from '@builder.io/qwik-city';
 import { getData } from '~/server/auctions';
 import type { Auction } from '~/types';
 import AuctionCard from '~/components/auctions/AuctionCard';
+import EmptyFilter from '~/components/shared/EmptyFilter';
 
 export default component$(() => {
   const query = useSignal(useLocation().url.search);
@@ -22,7 +23,7 @@ export default component$(() => {
         value={data}
         onPending={() => <h3>Loading</h3>}
         onResolved={(data) =>
-          data.totalCount ? (
+          !data.totalCount ? (
             <>
               <div class='grid grid-cols-4 gap-6'>
                 {data.results.map((auction: Auction) => (
@@ -31,7 +32,7 @@ export default component$(() => {
               </div>
             </>
           ) : (
-            <p>No data</p>
+            <EmptyFilter showReset />
           )
         }
       />
