@@ -1,15 +1,25 @@
-import { Resource, component$, useResource$ } from '@builder.io/qwik';
+import {
+  Resource,
+  component$,
+  useResource$,
+  useSignal,
+} from '@builder.io/qwik';
+import { useLocation } from '@builder.io/qwik-city';
 import { getData } from '~/server/auctions';
 
 export default component$(() => {
-  const data = useResource$(async () => await getData(''));
+  const query = useSignal(useLocation().url.search);
+
+  const data = useResource$(async () => {
+    return await getData(query.value);
+  });
 
   return (
     <>
       <Resource
         value={data}
-        onPending={() => <p>Loading</p>}
-        onResolved={(data) => <p>{data.totalCount}</p>}
+        onPending={() => <h3>Loading</h3>}
+        onResolved={(data) => (data.totalCount ? <>Data</> : <p>No data</p>)}
       />
     </>
   );
