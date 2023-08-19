@@ -1,6 +1,7 @@
 import { component$ } from '@builder.io/qwik';
 import type { Auction } from '~/types';
 import CarImage from '~/components/auctions/CarImage';
+import CountdownTimer from './CountdownTimer';
 
 type AuctionCardProps = {
   auction: Auction;
@@ -11,7 +12,9 @@ export default component$<AuctionCardProps>(({ auction }) => {
       <div class='w-full bg-gray-200 aspect-w-16 aspect-h-10 rounded-lg overflow-hidden'>
         <div>
           <CarImage imageUrl={auction.imageUrl} />
-          <div class='absolute bottom-2 left-2'></div>
+          <div class='absolute bottom-2 left-2'>
+            <CountdownTimer auctionEnd={auction.auctionEnd} />
+          </div>
         </div>
       </div>
       <div class='flex justify-between items-center mt-4'>
