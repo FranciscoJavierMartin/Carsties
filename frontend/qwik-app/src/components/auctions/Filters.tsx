@@ -1,4 +1,4 @@
-import { component$ } from '@builder.io/qwik';
+import { component$, useContext } from '@builder.io/qwik';
 import { BsStopwatchFill, BsStopCircleFill } from '@qwikest/icons/bootstrap';
 import {
   HiFireMini,
@@ -6,6 +6,7 @@ import {
   HiClockOutline,
 } from '@qwikest/icons/heroicons';
 import SortAscending from '~/components/icons/SortAscending';
+import { searchContext } from '~/store/searchAuctions';
 
 const pageSizeButtons = [4, 8, 12];
 
@@ -46,9 +47,7 @@ const filterButtons = [
 ];
 
 export default component$(() => {
-  const filterBy = 'live';
-  const orderBy = 'make';
-  const pageSize = 4;
+  const searchStore = useContext(searchContext);
 
   return (
     <div class='flex justify-between items-center mb-4'>
@@ -58,6 +57,9 @@ export default component$(() => {
           {filterButtons.map(({ label, icon: Icon, value }, index: number) => (
             <button
               key={value}
+              onClick$={() => {
+                searchStore.filterBy = value;
+              }}
               class={[
                 'inline-flex',
                 'items-center',
@@ -78,7 +80,7 @@ export default component$(() => {
                   : 'border-t border-b',
                 {
                   'text-red-900 border-red-300 enabled:hover:bg-red-100 focus:ring-4 focus:ring-red-300 :bg-red-600 focus:text-red-900':
-                    filterBy === value,
+                    searchStore.filterBy === value,
                 },
               ]}
             >
@@ -94,6 +96,9 @@ export default component$(() => {
           {orderButtons.map(({ label, icon: Icon, value }, index: number) => (
             <button
               key={value}
+              onClick$={() => {
+                searchStore.orderBy = value;
+              }}
               class={[
                 'inline-flex',
                 'items-center',
@@ -115,7 +120,7 @@ export default component$(() => {
                   : 'border-t border-b',
                 {
                   'text-red-900 border-red-300 enabled:hover:bg-red-100 focus:ring-4 focus:ring-red-300 :bg-red-600 focus:text-red-900':
-                    orderBy === value,
+                    searchStore.orderBy === value,
                 },
               ]}
             >
@@ -131,6 +136,9 @@ export default component$(() => {
           {pageSizeButtons.map((value: number, index: number) => (
             <button
               key={value}
+              onClick$={() => {
+                searchStore.pageSize = value;
+              }}
               class={[
                 'inline-flex',
                 'items-center',
@@ -152,7 +160,7 @@ export default component$(() => {
                   : 'border-t border-b',
                 {
                   'text-red-900 border-red-300 enabled:hover:bg-red-100 focus:ring-4 focus:ring-red-300 :bg-red-600 focus:text-red-900':
-                    pageSize === value,
+                    searchStore.pageSize === value,
                 },
               ]}
             >
