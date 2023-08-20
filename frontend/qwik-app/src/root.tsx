@@ -1,4 +1,9 @@
-import { component$, useVisibleTask$ } from '@builder.io/qwik';
+import {
+  component$,
+  useContextProvider,
+  useStore,
+  useVisibleTask$,
+} from '@builder.io/qwik';
 import {
   QwikCityProvider,
   RouterOutlet,
@@ -7,8 +12,15 @@ import {
 import { initFlowbite } from 'flowbite';
 import { RouterHead } from './components/router-head/router-head';
 
-
 import './global.css';
+import type { SearchAuctionsStore } from '~/types';
+import {
+  initialAuctionsStore,
+  reset,
+  searchContext,
+  setParams,
+  setSearchValue,
+} from '~/store/searchAuctions';
 
 export default component$(() => {
   /**
@@ -17,6 +29,15 @@ export default component$(() => {
    *
    * Don't remove the `<head>` and `<body>` elements.
    */
+
+  const searchStore = useStore<SearchAuctionsStore>({
+    ...initialAuctionsStore,
+    reset,
+    setParams,
+    setSearchValue,
+  });
+
+  useContextProvider(searchContext, searchStore);
 
   useVisibleTask$(() => {
     initFlowbite();
