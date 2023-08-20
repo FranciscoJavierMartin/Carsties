@@ -43,6 +43,14 @@ export default component$<{ auctionEnd: string }>(({ auctionEnd }) => {
             : days.value === 0 && hours.value < 10
             ? 'bg-amber-600'
             : 'bg-green-600',
+          {
+            hidden: !(
+              days.value ||
+              hours.value ||
+              minutes.value ||
+              seconds.value
+            ),
+          },
         ]}
       >
         {isCompleted.value ? (
