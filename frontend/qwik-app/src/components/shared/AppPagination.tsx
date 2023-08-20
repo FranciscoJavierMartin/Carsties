@@ -1,19 +1,19 @@
-import { component$ } from '@builder.io/qwik';
+import { component$, useContext } from '@builder.io/qwik';
+import { searchContext } from '~/store/searchAuctions';
 
-type AppPaginationProps = {
-  currentPage: number;
-  pageCount: number;
-};
+export default component$(() => {
+  const searchStore = useContext(searchContext);
 
-export default component$<AppPaginationProps>(
-  ({ currentPage = 3, pageCount = 5 }) => {
-    return (
-      <nav aria-label='pagination' class='mb-5'>
-        <ul class='inline-flex -space-x-px text-sm'>
-          <li>
-            <button
-              disabled={currentPage === 1}
-              class='
+  return (
+    <nav aria-label='pagination' class='mb-5'>
+      <ul class='inline-flex -space-x-px text-sm'>
+        <li>
+          <button
+            onClick$={() => {
+              searchStore.pageNumber--;
+            }}
+            disabled={searchStore.pageNumber === 1}
+            class='
                 flex 
                 items-center 
                 justify-center 
@@ -28,47 +28,51 @@ export default component$<AppPaginationProps>(
                 hover:bg-gray-100 
                 hover:text-gray-700
               '
-            >
-              Previous
-            </button>
-          </li>
-          {[...Array(pageCount)].map((_, i) => {
-            const isCurrentPage = i + 1 === currentPage;
-            return (
-              <li key={i}>
-                <button
-                  aria-current={isCurrentPage ? 'page' : undefined}
-                  class={[
-                    'flex',
-                    'items-center',
-                    'justify-center',
-                    'px-3',
-                    'h-8',
-                    'border',
-                    'leading-tight',
-                    'border-gray-300',
-                    isCurrentPage ? 'hover:bg-blue-100' : 'hover:bg-gray-100',
-                    isCurrentPage ? 'text-blue-600' : 'text-gray-500',
-                    isCurrentPage ? 'bg-blue-50' : 'bg-white',
-                    isCurrentPage
-                      ? 'hover:text-blue-700'
-                      : 'hover:text-gray-700',
-                  ]}
-                >
-                  {i + 1}
-                </button>
-              </li>
-            );
-          })}
-          <li>
-            <button
-              disabled={currentPage === pageCount}
-              class='
+          >
+            Previous
+          </button>
+        </li>
+        {[...Array(searchStore.pageCount)].map((_, i) => {
+          const isCurrentPage = i + 1 === searchStore.pageNumber;
+          return (
+            <li key={i}>
+              <button
+                onClick$={() => {
+                  searchStore.pageNumber = i + 1;
+                }}
+                aria-current={isCurrentPage ? 'page' : undefined}
+                class={[
+                  'flex',
+                  'items-center',
+                  'justify-center',
+                  'px-3',
+                  'h-8',
+                  'border',
+                  'leading-tight',
+                  'border-gray-300',
+                  isCurrentPage ? 'hover:bg-blue-100' : 'hover:bg-gray-100',
+                  isCurrentPage ? 'text-blue-600' : 'text-gray-500',
+                  isCurrentPage ? 'bg-blue-50' : 'bg-white',
+                  isCurrentPage ? 'hover:text-blue-700' : 'hover:text-gray-700',
+                ]}
+              >
+                {i + 1}
+              </button>
+            </li>
+          );
+        })}
+        <li>
+          <button
+            onClick$={() => {
+              searchStore.pageNumber++;
+            }}
+            disabled={searchStore.pageNumber === searchStore.pageCount}
+            class='
                 flex 
                 items-center 
                 justify-center 
-                px-3 
-                h-8 
+                px-3
+                h-8
                 leading-tight 
                 text-gray-500 
                 bg-white 
@@ -77,12 +81,11 @@ export default component$<AppPaginationProps>(
                 rounded-r-lg 
                 hover:bg-gray-100 
                 hover:text-gray-700'
-            >
-              Next
-            </button>
-          </li>
-        </ul>
-      </nav>
-    );
-  }
-);
+          >
+            Next
+          </button>
+        </li>
+      </ul>
+    </nav>
+  );
+});
