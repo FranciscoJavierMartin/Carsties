@@ -23,7 +23,7 @@ export default component$(() => {
         value={data}
         onPending={() => <h3>Loading</h3>}
         onResolved={(data) =>
-          !data.totalCount ? (
+          data.totalCount ? (
             <>
               <div class='grid grid-cols-4 gap-6'>
                 {data.results.map((auction: Auction) => (
