@@ -8,7 +8,7 @@ type AppPaginationProps = {
 export default component$<AppPaginationProps>(
   ({ currentPage = 3, pageCount = 5 }) => {
     return (
-      <nav aria-label='pagination'>
+      <nav aria-label='pagination' class='mb-5'>
         <ul class='inline-flex -space-x-px text-sm'>
           <li>
             <button
