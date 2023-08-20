@@ -1,18 +1,26 @@
-import { component$, useSignal } from '@builder.io/qwik';
-import type { QwikKeyboardEvent } from '@builder.io/qwik';
+import { component$, useContext, $ } from '@builder.io/qwik';
+import type { QwikChangeEvent, QwikKeyboardEvent } from '@builder.io/qwik';
+import { searchContext } from '~/store/searchAuctions';
 
 export default component$(() => {
-  const value = useSignal<string>('');
+  const searchStore = useContext(searchContext);
+
+  const search = $(function () {
+    searchStore.searchTerm = searchStore.searchValue;
+  });
 
   return (
     <div class='flex w-[50%] items-center border-2 rounded-full py-2 shadow-sm'>
       <input
-        bind:value={value}
+        onChange$={(e: QwikChangeEvent<HTMLInputElement>) => {
+          searchStore.searchValue = e.target.value;
+        }}
         onKeyDown$={(e: QwikKeyboardEvent<HTMLInputElement>) => {
           if (e.key === 'Enter') {
-            console.log('Here');
+            search();
           }
         }}
+        value={searchStore.searchValue}
         placeholder='Search for cars by make, model or color'
         class='
           flex-grow 
@@ -26,7 +34,7 @@ export default component$(() => {
         text-gray-600
         '
       />
-      <button>
+      <button onClick$={search}>
         <svg
           stroke='currentColor'
           fill='currentColor'
