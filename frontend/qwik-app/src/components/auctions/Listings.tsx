@@ -9,6 +9,7 @@ import { getData } from '~/server/auctions';
 import type { Auction } from '~/types';
 import AuctionCard from '~/components/auctions/AuctionCard';
 import EmptyFilter from '~/components/shared/EmptyFilter';
+import AppPagination from '~/components/shared/AppPagination';
 
 export default component$(() => {
   const query = useSignal(useLocation().url.search);
@@ -29,6 +30,9 @@ export default component$(() => {
                 {data.results.map((auction: Auction) => (
                   <AuctionCard key={auction.id} auction={auction} />
                 ))}
+              </div>
+              <div class='flex justify-center'>
+                <AppPagination />
               </div>
             </>
           ) : (
