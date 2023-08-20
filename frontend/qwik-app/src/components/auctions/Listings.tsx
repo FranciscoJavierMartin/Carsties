@@ -7,9 +7,10 @@ import {
 import { useLocation } from '@builder.io/qwik-city';
 import { getData } from '~/server/auctions';
 import type { Auction } from '~/types';
+import AppPagination from '~/components/shared/AppPagination';
 import AuctionCard from '~/components/auctions/AuctionCard';
 import EmptyFilter from '~/components/shared/EmptyFilter';
-import AppPagination from '~/components/shared/AppPagination';
+import Filters from '~/components/auctions/Filters';
 
 export default component$(() => {
   const query = useSignal(useLocation().url.search);
@@ -26,13 +27,14 @@ export default component$(() => {
         onResolved={(data) =>
           data.totalCount ? (
             <>
+              <Filters />
               <div class='grid grid-cols-4 gap-6'>
                 {data.results.map((auction: Auction) => (
                   <AuctionCard key={auction.id} auction={auction} />
                 ))}
               </div>
               <div class='flex justify-center'>
-                <AppPagination />
+                <AppPagination currentPage={2} pageCount={5} />
               </div>
             </>
           ) : (
