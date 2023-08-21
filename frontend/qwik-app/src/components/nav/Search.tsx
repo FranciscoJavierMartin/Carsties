@@ -6,7 +6,7 @@ export default component$(() => {
   const searchStore = useContext(searchContext);
 
   const search = $(function () {
-    searchStore.searchTerm = searchStore.searchValue;
+    searchStore.setParams({ searchTerm: searchStore.searchValue });
   });
 
   return (
