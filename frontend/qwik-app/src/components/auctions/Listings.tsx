@@ -5,7 +5,7 @@ import {
   useResource$,
 } from '@builder.io/qwik';
 import { getData } from '~/server/auctions';
-import type { Auction } from '~/types';
+import type { Auction, PagedResult } from '~/types';
 import AppPagination from '~/components/shared/AppPagination';
 import AuctionCard from '~/components/auctions/AuctionCard';
 import EmptyFilter from '~/components/shared/EmptyFilter';
@@ -14,7 +14,8 @@ import { searchContext } from '~/store/searchAuctions';
 
 export default component$(() => {
   const searchStore = useContext(searchContext);
-  const data = useResource$(async ({ track }) => {
+
+  const data = useResource$<PagedResult<Auction>>(async ({ track }) => {
     track(searchStore);
 
     let queryString = `?orderBy=${searchStore.orderBy}&filterBy=${searchStore.filterBy}&pageSize=${searchStore.pageSize}&pageNumber=${searchStore.pageNumber}`;
@@ -23,7 +24,11 @@ export default component$(() => {
       queryString += `&searchTerm=${searchStore.searchTerm}`;
     }
 
-    return await getData(queryString);
+    const result: PagedResult<Auction> = await getData(queryString);
+
+    searchStore.pageCount = result.pageCount;
+
+    return result;
   });
 
   return (

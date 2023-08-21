@@ -6,6 +6,7 @@ export default component$(() => {
 
   return (
     <nav aria-label='pagination' class='mb-5'>
+      {searchStore.pageCount}
       <ul class='inline-flex -space-x-px text-sm'>
         <li>
           <button
@@ -25,8 +26,9 @@ export default component$(() => {
                 bg-white border 
                 border-gray-300 
                 rounded-l-lg 
-                hover:bg-gray-100 
-                hover:text-gray-700
+                enabled:hover:bg-gray-100 
+                enabled:hover:text-gray-700
+                enabled:cursor-pointer
               '
           >
             Previous
@@ -38,7 +40,7 @@ export default component$(() => {
             <li key={i}>
               <button
                 onClick$={() => {
-                  searchStore.pageNumber = i + 1;
+                  searchStore.setParams({ pageNumber: i + 1 });
                 }}
                 aria-current={isCurrentPage ? 'page' : undefined}
                 class={[
@@ -79,8 +81,10 @@ export default component$(() => {
                 border
                 border-gray-300 
                 rounded-r-lg 
-                hover:bg-gray-100 
-                hover:text-gray-700'
+                enabled:hover:bg-gray-100 
+                enabled:hover:text-gray-700
+                enabled:cursor-pointer
+              '
           >
             Next
           </button>

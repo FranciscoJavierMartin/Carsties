@@ -58,7 +58,7 @@ export default component$(() => {
             <button
               key={value}
               onClick$={() => {
-                searchStore.filterBy = value;
+                searchStore.setParams({ filterBy: value });
               }}
               class={[
                 'inline-flex',
@@ -97,7 +97,7 @@ export default component$(() => {
             <button
               key={value}
               onClick$={() => {
-                searchStore.orderBy = value;
+                searchStore.setParams({ orderBy: value });
               }}
               class={[
                 'inline-flex',
@@ -137,7 +137,7 @@ export default component$(() => {
             <button
               key={value}
               onClick$={() => {
-                searchStore.pageSize = value;
+                searchStore.setParams({ pageSize: value });
               }}
               class={[
                 'inline-flex',
