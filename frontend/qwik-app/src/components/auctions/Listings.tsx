@@ -16,7 +16,13 @@ export default component$(() => {
   const searchStore = useContext(searchContext);
 
   const data = useResource$<PagedResult<Auction>>(async ({ track }) => {
-    track(searchStore);
+    track(() => [
+      searchStore.filterBy,
+      searchStore.orderBy,
+      searchStore.pageNumber,
+      searchStore.pageSize,
+      searchStore.searchTerm,
+    ]);
 
     let queryString = `?orderBy=${searchStore.orderBy}&filterBy=${searchStore.filterBy}&pageSize=${searchStore.pageSize}&pageNumber=${searchStore.pageNumber}`;
 
