@@ -69,18 +69,18 @@ export default component$(() => {
             }}
             disabled={searchStore.pageNumber === searchStore.pageCount}
             class='
-                flex 
-                items-center 
-                justify-center 
+                flex
+                items-center
+                justify-center
                 px-3
                 h-8
-                leading-tight 
-                text-gray-500 
-                bg-white 
+                leading-tight
+                text-gray-500
+                bg-white
                 border
-                border-gray-300 
-                rounded-r-lg 
-                enabled:hover:bg-gray-100 
+                border-gray-300
+                rounded-r-lg
+                enabled:hover:bg-gray-100
                 enabled:hover:text-gray-700
                 enabled:cursor-pointer
               '
