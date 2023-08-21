@@ -6,7 +6,7 @@ export const searchContext =
 
 export const initialAuctionsStore: SearchAuctionsState = {
   pageNumber: 1,
-  pageSize: 12,
+  pageSize: 4,
   pageCount: 1,
   searchTerm: '',
   searchValue: '',

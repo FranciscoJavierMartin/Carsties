@@ -18,7 +18,6 @@ export default component$<{ imageUrl: string }>(({ imageUrl }) => {
         'grayscale-0 blue-0 scale-100',
       ]}
       alt='image'
-      aspectRatio='auto'
       data-nimg='fill'
       decoding='async'
       sizes='(max-width:768px) 100vw, (max-width: 1200px) 50vw, 25vw'

@@ -6,7 +6,6 @@ export default component$(() => {
 
   return (
     <nav aria-label='pagination' class='mb-5'>
-      {searchStore.pageCount}
       <ul class='inline-flex -space-x-px text-sm'>
         <li>
           <button
