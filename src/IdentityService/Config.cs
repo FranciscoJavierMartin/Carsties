@@ -42,6 +42,19 @@ public static class Config
                 AllowedScopes = {"openid", "profile", "auctionApp"},
                 AccessTokenLifetime = 30 * 24 * 3600,
                 AlwaysIncludeUserClaimsInIdToken = true
+            },
+            new Client{
+                ClientId = "qwikApp",
+                ClientName = "qwikApp",
+                // TODO: Store in a secure place
+                ClientSecrets = {new Secret("secret".Sha256())},
+                AllowedGrantTypes = GrantTypes.CodeAndClientCredentials,
+                RequirePkce = false,
+                RedirectUris = {"http://localhost:3001/api/auth/callback/id-server"},
+                AllowOfflineAccess = true,
+                AllowedScopes = {"openid", "profile", "auctionApp"},
+                AccessTokenLifetime = 30 * 24 * 3600,
+                AlwaysIncludeUserClaimsInIdToken = true
             }
         };
 }
