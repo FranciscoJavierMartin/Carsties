@@ -14,8 +14,7 @@ export const { onRequest, useAuthSession, useAuthSignin, useAuthSignout } =
         clientSecret: env.get('AUTH_DIS6_CLIENT_SECRET')!,
         issuer: env.get('AUTH_DIS6_ISSUER'),
         authorization: { params: { scope: 'openid profile auctionApp' } },
-        idToken: true,
-      } as any),
+      }),
     ] as Provider[],
     callbacks: {
       async jwt({ token }) {
