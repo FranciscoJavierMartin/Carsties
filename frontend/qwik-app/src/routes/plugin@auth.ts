@@ -8,12 +8,17 @@ export const { onRequest, useAuthSession, useAuthSignin, useAuthSignout } =
     trustHost: true,
     session: { strategy: 'jwt' },
     providers: [
+      // DuendeIdentityServer6Provider({
+      //   id: env.get('AUTH_DIS6_ID'),
+      //   clientId: env.get('AUTH_DIS6_CLIENT_ID')!,
+      //   clientSecret: env.get('AUTH_DIS6_CLIENT_SECRET')!,
+      //   issuer: env.get('AUTH_DIS6_ISSUER'),
+      //   authorization: { params: { scope: 'openid profile auctionApp' } },
+      // }),
       DuendeIdentityServer6Provider({
-        id: env.get('AUTH_DIS6_ID'),
-        clientId: env.get('AUTH_DIS6_CLIENT_ID')!,
-        clientSecret: env.get('AUTH_DIS6_CLIENT_SECRET')!,
-        issuer: env.get('AUTH_DIS6_ISSUER'),
-        authorization: { params: { scope: 'openid profile auctionApp' } },
+        clientId: 'interactive.confidential',
+        clientSecret: 'secret',
+        issuer: 'https://demo.duendesoftware.com',
       }),
     ] as Provider[],
     callbacks: {

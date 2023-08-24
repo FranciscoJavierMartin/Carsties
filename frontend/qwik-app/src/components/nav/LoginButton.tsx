@@ -9,7 +9,7 @@ export default component$(() => {
     <ButtonOutline
       onClick={$(() =>
         signIn.submit({
-          providerId: 'id-server',
+          providerId: 'interactive.confidential',
           options: { callbackUrl: '/' },
         })
       )}
