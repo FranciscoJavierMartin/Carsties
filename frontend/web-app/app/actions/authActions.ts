@@ -1,4 +1,4 @@
-import { getServerSession } from 'next-auth';
+import { getServerSession, User } from 'next-auth';
 import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 import { getToken } from 'next-auth/jwt';
 import { cookies, headers } from 'next/headers';
@@ -8,8 +8,8 @@ export async function getSession() {
   return await getServerSession(authOptions);
 }
 
-export async function getCurrentUser() {
-  let user: any;
+export async function getCurrentUser(): Promise<User | null> {
+  let user: User | null;
 
   try {
     const session = await getSession();
