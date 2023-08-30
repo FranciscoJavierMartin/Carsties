@@ -1,12 +1,16 @@
 'use client';
 
-import { Button, TextInput } from 'flowbite-react';
+import { Button } from 'flowbite-react';
 import React from 'react';
 import { FieldValues, useForm } from 'react-hook-form';
 import Input from '@/app/components/Input';
-import DateInput from '../components/DateInput';
+import DateInput from '@/app/components/DateInput';
+import { createAuction } from '@/app/actions/auctionActions';
+import { useRouter } from 'next/navigation';
 
 export default function AuctionForm() {
+  const router = useRouter();
+
   const {
     control,
     handleSubmit,
@@ -14,8 +18,18 @@ export default function AuctionForm() {
     formState: { isSubmitting, isValid, isDirty, errors },
   } = useForm({ mode: 'onTouched' });
 
-  function onSubmit(data: FieldValues) {
-    console.log(data);
+  async function onSubmit(data: FieldValues) {
+    try {
+      const res = await createAuction(data);
+
+      if (res.error) {
+        throw new Error(res.error);
+      }
+
+      router.push(`/auctions/details/${res.id}`);
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   return (
