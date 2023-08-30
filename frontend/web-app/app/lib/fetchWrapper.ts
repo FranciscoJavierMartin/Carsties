@@ -1,3 +1,5 @@
+import { getTokenWorkaround } from '@/app/actions/authActions';
+
 const baseUrl = process.env.BACKEND_URL;
 
 async function get(url: string) {
@@ -7,7 +9,50 @@ async function get(url: string) {
   };
 
   const response = await fetch(baseUrl + url, requestOptions);
-  return handleResponse(response);
+  return await handleResponse(response);
+}
+
+async function getHeaders() {
+  const token = await getTokenWorkaround();
+  const headers: HeadersInit = { 'Content-type': 'application/json' };
+
+  if (token) {
+    headers.Authorization = `Bearer ${token.access_token}`;
+  }
+
+  return headers;
+}
+
+async function post(url: string, body: {}) {
+  const requestOptions: RequestInit = {
+    method: 'POST',
+    headers: await getHeaders(),
+    body: JSON.stringify(body),
+  };
+
+  const response = await fetch(baseUrl + url, requestOptions);
+  return await handleResponse(response);
+}
+
+async function put(url: string, body: {}) {
+  const requestOptions: RequestInit = {
+    method: 'PUT',
+    headers: await getHeaders(),
+    body: JSON.stringify(body),
+  };
+
+  const response = await fetch(baseUrl + url, requestOptions);
+  return await handleResponse(response);
+}
+
+async function del(url: string) {
+  const requestOptions: RequestInit = {
+    method: 'DELETE',
+    headers: await getHeaders(),
+  };
+
+  const response = await fetch(baseUrl + url, requestOptions);
+  return await handleResponse(response);
 }
 
 async function handleResponse(response: Response) {
@@ -24,4 +69,7 @@ async function handleResponse(response: Response) {
 
 export const fetchWrapper = {
   get,
+  post,
+  put,
+  del,
 };
