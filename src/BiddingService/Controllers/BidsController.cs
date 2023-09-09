@@ -64,4 +64,14 @@ public class BidsController : ControllerBase
 
     return result;
   }
+
+  [HttpGet("{auctionId}")]
+  public async Task<ActionResult<List<Bid>>> GetBidsForAcution(string auctionId)
+  {
+    return await DB
+      .Find<Bid>()
+      .Match(a => a.AuctionId == auctionId)
+      .Sort(b => b.Descending(a => a.BidTime))
+      .ExecuteAsync();
+  }
 }
