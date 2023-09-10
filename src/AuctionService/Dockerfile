@@ -6,6 +6,7 @@ EXPOSE 80
 # for every dockerfile in the project to take advantage of docker caching
 COPY Carsties.sln Carsties.sln
 COPY src/AuctionService/AuctionService.csproj src/AuctionService/AuctionService.csproj
+COPY src/BiddingService/BiddingService.csproj src/BiddingService/BiddingService.csproj
 COPY src/Contracts/Contracts.csproj src/Contracts/Contracts.csproj
 COPY src/GatewayService/GatewayService.csproj src/GatewayService/GatewayService.csproj
 COPY src/IdentityService/IdentityService.csproj src/IdentityService/IdentityService.csproj

@@ -20,6 +20,7 @@ public class SeedData
 
         if (userMgr.Users.Any())
         {
+            Log.Information("No seeding users");
             return;
         }
 
@@ -91,13 +92,13 @@ public class SeedData
                 Email = "TomSmith@email.com",
                 EmailConfirmed = true
             };
-            var result = userMgr.CreateAsync(bob, "Pass123$").Result;
+            var result = userMgr.CreateAsync(tom, "Pass123$").Result;
             if (!result.Succeeded)
             {
                 throw new Exception(result.Errors.First().Description);
             }
 
-            result = userMgr.AddClaimsAsync(bob, new Claim[]{
+            result = userMgr.AddClaimsAsync(tom, new Claim[]{
                             new Claim(JwtClaimTypes.Name, "Tom Smith"),
                             new Claim("location", "somewhere")
                         }).Result;
