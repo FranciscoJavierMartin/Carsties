@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using BiddingService.DTOs;
 using BiddingService.Models;
+using BiddingService.Services;
 using Contracts;
 using MassTransit;
 using Microsoft.AspNetCore.Authorization;
@@ -15,11 +16,14 @@ public class BidsController : ControllerBase
 {
   private readonly IMapper _mapper;
   private readonly IPublishEndpoint _publishEndpoint;
+  private readonly GrpcAuctionClient _grpcClient;
 
-  public BidsController(IMapper mapper, IPublishEndpoint publishEndpoint)
+  public BidsController(IMapper mapper, IPublishEndpoint publishEndpoint,
+    GrpcAuctionClient grpcClient)
   {
     _mapper = mapper;
     _publishEndpoint = publishEndpoint;
+    _grpcClient = grpcClient;
   }
 
   [Authorize]
@@ -32,8 +36,16 @@ public class BidsController : ControllerBase
 
     if (auction == null)
     {
-      // TODO: Check with auction service if that has auction
-      result = NotFound();
+      auction = _grpcClient.GetAuction(auctionId);
+
+      if (auction == null)
+      {
+        result = BadRequest("Cannot accept bids on this auction at this time");
+      }
+      else
+      {
+        result = await ProcessPlaceBid(auction, amount);
+      }
     }
     else if (auction.Seller == User.Identity.Name)
     {
@@ -41,40 +53,7 @@ public class BidsController : ControllerBase
     }
     else
     {
-      var bid = new Bid
-      {
-        Amount = amount,
-        AuctionId = auctionId,
-        Bidder = User.Identity.Name
-      };
-
-      if (auction.AuctionEnd < DateTime.UtcNow)
-      {
-        bid.BidStatus = BidStatus.Finished;
-      }
-
-      var highBid = await DB.Find<Bid>()
-        .Match(a => a.AuctionId == auctionId)
-        .Sort(b => b.Descending(x => x.Amount))
-        .ExecuteFirstAsync();
-
-      if (highBid != null && amount > highBid.Amount || highBid == null)
-      {
-        bid.BidStatus = amount > auction.ReservePrice
-          ? BidStatus.Accepted
-          : BidStatus.AcceptedBelowReserve;
-      }
-
-      if (highBid != null && bid.Amount <= highBid.Amount)
-      {
-        bid.BidStatus = BidStatus.TooLow;
-      }
-
-      await DB.SaveAsync(bid);
-
-      await _publishEndpoint.Publish(_mapper.Map<BidPlaced>(bid));
-
-      result = Ok(_mapper.Map<BidDto>(bid));
+      result = await ProcessPlaceBid(auction, amount);
     }
 
     return result;
@@ -90,5 +69,43 @@ public class BidsController : ControllerBase
       .ExecuteAsync();
 
     return bids.Select(_mapper.Map<BidDto>).ToList();
+  }
+
+  private async Task<ActionResult<BidDto>> ProcessPlaceBid(Auction auction, int amount)
+  {
+    var bid = new Bid
+    {
+      Amount = amount,
+      AuctionId = auction.ID,
+      Bidder = User.Identity.Name
+    };
+
+    if (auction.AuctionEnd < DateTime.UtcNow)
+    {
+      bid.BidStatus = BidStatus.Finished;
+    }
+
+    var highBid = await DB.Find<Bid>()
+      .Match(a => a.AuctionId == auction.ID)
+      .Sort(b => b.Descending(x => x.Amount))
+      .ExecuteFirstAsync();
+
+    if (highBid != null && amount > highBid.Amount || highBid == null)
+    {
+      bid.BidStatus = amount > auction.ReservePrice
+        ? BidStatus.Accepted
+        : BidStatus.AcceptedBelowReserve;
+    }
+
+    if (highBid != null && bid.Amount <= highBid.Amount)
+    {
+      bid.BidStatus = BidStatus.TooLow;
+    }
+
+    await DB.SaveAsync(bid);
+
+    await _publishEndpoint.Publish(_mapper.Map<BidPlaced>(bid));
+
+    return Ok(_mapper.Map<BidDto>(bid));
   }
 }
