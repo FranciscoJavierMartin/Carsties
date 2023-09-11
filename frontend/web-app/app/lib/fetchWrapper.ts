@@ -57,13 +57,19 @@ async function del(url: string) {
 
 async function handleResponse(response: Response) {
   const text = await response.text();
-  const data = text && JSON.parse(text);
+  let data;
+
+  try {
+    data = JSON.parse(text);
+  } catch (error) {
+    data = text;
+  }
 
   return response.ok
     ? data || response.statusText
     : {
         status: response.status,
-        message: response.statusText,
+        message: typeof data === 'string' ? data : response.statusText,
       };
 }
 
