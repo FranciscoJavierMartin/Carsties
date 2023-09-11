@@ -7,9 +7,12 @@ import Heading from '@/app/components/Heading';
 import { useBidStore } from '@/app/hooks/useBidStore';
 import { Auction, Bid } from '@/types';
 import BidItem from '@/app/auctions/details/[id]/BidItem';
+import { numberWithCommas } from '@/app/lib/numberWithComma';
+import EmptyFilter from '@/app/components/EmptyFilter';
+import BidForm from './BidForm';
 
 type Props = {
-  user: User|null;
+  user: User | null;
   auction: Auction;
 };
 
@@ -17,6 +20,11 @@ export default function BidList({ user, auction }: Props) {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const bids = useBidStore((state) => state.bids);
   const setBids = useBidStore((state) => state.setBids);
+
+  const highBid = bids.reduce(
+    (prev, current) => (prev > current.amount ? prev : current.amount),
+    0
+  );
 
   useEffect(() => {
     getBidsForAuction(auction.id)
@@ -36,11 +44,27 @@ export default function BidList({ user, auction }: Props) {
   return isLoading ? (
     <span>Loading bids...</span>
   ) : (
-    <div className='border-2 rounded-lg p-2 bg-gray-200'>
-      <Heading title='Bids' />
-      {bids.map((bid) => (
-        <BidItem bid={bid} key={bid.id} />
-      ))}
+    <div className='rounded-lg shadow-md'>
+      <div className='py-2 px-4 bg-white'>
+        <div className='sticky top-0 bg-white p-2'>
+          <Heading
+            title={`Current high bid is $${numberWithCommas(highBid)}`}
+          />
+        </div>
+      </div>
+      <div className='overflow-auto h-[400px] flex flex-col-reverse px-2'>
+        {bids.length ? (
+          bids.map((bid) => <BidItem bid={bid} key={bid.id} />)
+        ) : (
+          <EmptyFilter
+            title='No bids for this item'
+            subtitle='Please feel free to make a bid'
+          />
+        )}
+      </div>
+      <div className='px-2 pb-2 text-gray-500'>
+        <BidForm auctionId={auction.id} highBid={highBid} />
+      </div>
     </div>
   );
 }
