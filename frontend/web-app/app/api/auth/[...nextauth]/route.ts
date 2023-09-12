@@ -11,7 +11,7 @@ export const authOptions: NextAuthOptions = {
       id: 'id-server',
       clientSecret: 'secret',
       clientId: 'nextApp',
-      issuer: 'http://localhost:5001',
+      issuer: process.env.IDENTITY_SERVER_URL,
       authorization: { params: { scope: 'openid profile auctionApp' } },
       idToken: true,
     }),

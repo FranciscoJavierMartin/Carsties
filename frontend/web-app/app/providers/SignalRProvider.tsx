@@ -24,7 +24,7 @@ export default function SignalRProvider({
 
   useEffect(() => {
     const newConnection = new HubConnectionBuilder()
-      .withUrl('http://localhost:6001/notifications')
+      .withUrl(process.env.NEXT_PUBLIC_NOTIFY_URL!)
       .withAutomaticReconnect()
       .build();
 
@@ -36,12 +36,12 @@ export default function SignalRProvider({
       connection
         .start()
         .then(() => {
-          console.log('Connection to notification hub');
           connection.on('BidPlaced', (bid: Bid) => {
-            console.log('Bid placed event received');
             if (bid.bidStatus.includes('Accepted')) {
               setCurrentPrice(bid.auctionId, bid.amount);
             }
+
+            addBid(bid);
           });
 
           connection.on('AuctionCreated', (auction: Auction) => {
@@ -79,7 +79,7 @@ export default function SignalRProvider({
     return () => {
       connection?.stop();
     };
-  }, [connection, setCurrentPrice, user]);
+  }, [connection, setCurrentPrice, user, addBid]);
 
   return children;
 }
