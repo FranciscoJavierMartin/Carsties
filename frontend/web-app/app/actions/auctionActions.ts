@@ -22,9 +22,7 @@ export async function createAuction(data: FieldValues) {
 }
 
 export async function getDetailedViewData(id: string): Promise<Auction> {
-  const mio = await fetchWrapper.get(`auctions/${id}`);
-  console.log('MIO', mio.currentHighBid);
-  return mio;
+  return await fetchWrapper.get(`auctions/${id}`);
 }
 
 export async function updateAuction(id: string, data: FieldValues) {
