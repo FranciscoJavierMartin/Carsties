@@ -112,3 +112,18 @@ services:
       - ASPNETCORE_URLS=http://+:80
     ports:
       - 6001:80
+  web-app:
+    image: azurerathalos/web-app:latest
+    build:
+      context: .
+      dockerfile: frontend/web-app/Dockerfile
+    volumes:
+      - /var/lib/web/data
+    ports:
+      - 3000:3000
+    environment:
+      - NEXTAUTH_SECRET=something
+      - NEXTAUTH_URL=http://web-app
+      - BACKEND_URL=http://gateway-svc/
+      - IDENTITY_SERVER_URL=http://identity-svc
+      - NEXT_PUBLIC_NOTIFY_URL=http://gateway-svc/notifications
