@@ -1,4 +1,6 @@
 ﻿using IdentityService;
+using Npgsql;
+using Polly;
 using Serilog;
 
 Log.Logger = new LoggerConfiguration()
@@ -19,6 +21,10 @@ try
     var app = builder
         .ConfigureServices()
         .ConfigurePipeline();
+
+    var retryPolicy = Policy
+        .Handle<NpgsqlException>()
+        .WaitAndRetry(5, retryAttempt => TimeSpan.FromSeconds(10));
 
     // this seeding is only for the template to bootstrap the DB and users.
     // in production you will likely want a different approach.
